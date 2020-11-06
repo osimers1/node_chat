@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chat_socket.io</title>
+</head>
+<body>
+    <div id="message"></div>
+    <form action="">
+        <input id="msg" autocomplete="off"><button>send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(function (){
+
+            var socket = io();
+
+            $('form').submit(function(e) {
+                //preventDefault = empeche rechargement de la page
+                e.preventDefault();
+
+                socket.emit("chat message", $('#msg').val() );
+                // vide msg pour reecrire un nouveaux message
+                $('#msg').val("");
+
+                return false;
+            });
+
+            socket.on('chat message', function(msg){
+                $('#message').append($("<p>").text(msg));
+            });
+
+        });
+    </script>
+</body>
+</html>
